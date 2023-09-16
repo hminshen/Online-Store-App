@@ -31,6 +31,7 @@ const createUser = async (req: Request, res: Response, next: NextFunction) => {
             name: req.body.name,
             hashed_password: hashedPassword,
             salt: salt,
+            role_id: 1, // default to normal user
         };
         const newUser = await UsersService.createUser(userData);
         res.status(200).json(newUser);
