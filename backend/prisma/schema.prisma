@@ -17,4 +17,44 @@ model User {
   name  String
   hashed_password Bytes
   salt Bytes  
+  role_id Int
+  // Many-To-Many relationship with Store 
+  stores          Store[]     
+}
+
+model Store {
+  store_id       Int         @id @default(autoincrement())
+  store_name     String      @unique
+  description    String
+  // Many-To-Many relationship with Store 
+  admins          User[]        
+
+  // Many-to-Many relationship with items - linked by junction table StoreItems
+  items      StoreItems[]    
+}
+
+model StoreItems {
+  id         Int      @id @default(autoincrement())
+  store_id   Int
+  item_id    Int
+  quantity   Int      // Optional: If you want to track the quantity of each item in each store.
+
+  // Define relationships with items and stores
+  store      Store    @relation(fields: [store_id], references: [store_id])
+  item       Item     @relation(fields: [item_id], references: [item_id])
+
+  // Define a unique constraint to ensure an item is associated with a store only once
+  @@unique([store_id, item_id])
+}
+
+model Item {
+  item_id        Int         @id @unique @default(autoincrement())
+  store_id       Int         
+  name           String
+  description    String
+  price          Decimal
+  quantity       Int
+
+  // Many-to-many relationship with stores - linked by junction table StoreItems
+  stores      StoreItems[]    
 }
