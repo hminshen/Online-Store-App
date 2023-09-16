@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import UsersService from '../services/userService';
+import crypto from 'crypto';
 
 const getUsers = async (req: Request, res: Response) => {
     try{
@@ -12,9 +13,28 @@ const getUsers = async (req: Request, res: Response) => {
 }
 const createUser = async (req: Request, res: Response, next: NextFunction) => {
     try{
-        const {id, ...userData} = req.body;
+        // Generate a random salt
+        const salt = crypto.randomBytes(16);
+
+        // Get the user password
+        const password = req.body.password;
+
+        // Hash the password with the salt using PBKDF2
+        crypto.pbkdf2(password, salt, 100000, 64, 'sha512', async (err, derivedKey) => {
+        if (err) throw err;
+
+        const hashedPassword = derivedKey;
+            
+        const userData = {
+            email: req.body.email,
+            username: req.body.username,
+            name: req.body.name,
+            hashed_password: hashedPassword,
+            salt: salt,
+        };
         const newUser = await UsersService.createUser(userData);
         res.status(200).json(newUser);
+        });
     } catch(error){
         console.error('Error creating new user with name:' + error);
         res.status(500).json({ error: 'Could not create new user' });

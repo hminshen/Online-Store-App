@@ -1,4 +1,5 @@
-import { PrismaClient, User } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
+import { User } from '../models/user.model';
 const prisma = new PrismaClient();
 
 const GetUsers = async () => {
@@ -15,6 +16,15 @@ const GetUser = async (id:number) =>{
     return user;
 }
 
+const GetUserByName = async (name:string) =>{
+    const user = await prisma.user.findUnique({
+        where: {
+            username: name,
+        },
+    });
+    return user;
+}
+
 const CreateUser = async (userData:User) => {
     const userObj = await prisma.user.create({
         data: userData,            
@@ -25,7 +35,8 @@ const CreateUser = async (userData:User) => {
 const UserRepo = {
     GetUsers,
     GetUser,
-    CreateUser
+    CreateUser,
+    GetUserByName
 };
 
 export { UserRepo as default };
