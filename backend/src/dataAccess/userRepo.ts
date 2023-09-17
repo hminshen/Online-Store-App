@@ -1,35 +1,67 @@
 import { PrismaClient } from '@prisma/client';
 import { User } from '../models/user.model';
+import logger from '../logger/logger'; 
 const prisma = new PrismaClient();
 
 const GetUsers = async () => {
-    const users = await prisma.user.findMany();
-    return users;
+    try{
+        const users = await prisma.user.findMany();
+        logger.info('Retrieved users', { users });
+        return users;
+    }
+    catch(error){
+        logger.error('Error retrieving users', { error });
+        throw error;
+    }
+
 }
 
 const GetUser = async (id:number) =>{
-    const user = await prisma.user.findUnique({
-        where: {
-            id: id,
-        },
-    });
-    return user;
+    try{
+        const user = await prisma.user.findUnique({
+            where: {
+                id: id,
+            },
+        });
+        logger.info('Retrieved user', { user });
+        return user;
+    }
+    catch(error){
+        logger.error('Error retrieving user', { error });
+        throw error;
+    }
+    
 }
 
 const GetUserByName = async (name:string) =>{
-    const user = await prisma.user.findUnique({
-        where: {
-            username: name,
-        },
-    });
-    return user;
+    try{
+        const user = await prisma.user.findUnique({
+            where: {
+                username: name,
+            },
+        });
+        logger.info('Retrieved user', { user });
+        return user;
+    }
+    catch(error){
+        logger.error('Error retrieving user', { error });
+        throw error;
+    }
+    
 }
 
 const CreateUser = async (userData:User) => {
-    const userObj = await prisma.user.create({
-        data: userData,            
-    });
-    return userObj;
+    try{
+        const userObj = await prisma.user.create({
+            data: userData,            
+        });
+        logger.info('Created user', { userObj });
+        return userObj;
+    }
+    catch(error){
+        logger.error('Error Creating user', { error });
+        throw error;
+    }
 }
 
 const UserRepo = {
