@@ -5,34 +5,19 @@ import ProductCard from "../ProductCard/productCard";
 import { ProductListingsProps } from "../types";
 
 export default function ProductListings(props : ProductListingsProps) {
-    const numListingsPerPage = 15;
+    const numListingsPerPage = 9;
     const [totalPages, setTotalPages] = useState<number>(1);
     const products = props.products;
     const [page, setPage] = useState(1);
-    const [isReady, setReady] = useState<boolean>(false);
-    
-
-    const switchColumns = (index: number) => {
-        if (isReady) {
-          setReady(false);
-          //setActiveTabIndex(index);
-          setPage(1);
-        }
-      };
-  
-    const handlePageChange = (event, newPage) => {
+ 
+    const handlePageChange = (event: React.ChangeEvent<unknown>, newPage: number) => {
       setPage(newPage);
-  
-      //https://stackoverflow.com/questions/24665602/scrollintoview-scrolls-just-too-far
       const yOffset = -120;
       const pdtListingsTop = document.getElementById('productListings');
-      const y =
-        pdtListingsTop.getBoundingClientRect().top + window.scrollY + yOffset;
-  
-      window.scrollTo({ top: y, behavior: 'smooth' });
-      // let pdtListingsTop = document.getElementById('productListings');
-      // pdtListingsTop.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      // document.getElementById('productListings').scrollTop -= 100;
+      if(pdtListingsTop){
+         const y = pdtListingsTop.getBoundingClientRect().top + window.scrollY + yOffset;
+         window.scrollTo({ top: y, behavior: 'smooth' });
+      }
     };
   
     //reset page back to 1 when products rerender
@@ -44,10 +29,11 @@ export default function ProductListings(props : ProductListingsProps) {
   
     return (
       <div>
-          <ProductListing
+          {products && products.length > 0 && (<ProductListing
             id="productListings"
             data-aos-duration="300"
             data-aos="zoom-in-up"
+            style={{ display: 'flex', flexWrap: 'wrap', gap: '20px', marginBottom: '20px' }}
           >
             {products &&
               products
@@ -60,15 +46,15 @@ export default function ProductListings(props : ProductListingsProps) {
                     <ProductCard product={pdt} />
                   </>
                 ))}
-          </ProductListing>
-        <PaginationStyled>
+          </ProductListing>)}
+        {products && products.length > numListingsPerPage && (<PaginationStyled>
           <Pagination
             count={products && Math.ceil(products.length / numListingsPerPage)}
             page={page}
             onChange={handlePageChange}
-            style={{backgroundColor:"#D6F5DB"}}
+            style={{backgroundColor:"#D6F5DB" , alignSelf: 'center'}}
           />
-        </PaginationStyled>
+        </PaginationStyled>)}
       </div>
     );
   }

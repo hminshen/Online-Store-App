@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import {Root, Content, Words} from './productCardStyles';
-import { Card, CardContent, Typography } from '@mui/material';
+import { Button, Card, CardContent, Typography } from '@mui/material';
 import { ProductCardProps } from '../types';
 
 
@@ -24,50 +24,39 @@ export default function ProductCard(props : ProductCardProps) {
 
   
     return (
-      <div>
-        <Root>
-            <Card
+      <Root>
+      <Card
+        elevation={3}
+        onClick={handleClickOpen}
+        style={{
+          height: '100%',
+          backgroundColor: '#F3F4F6', // Background color
+          color: '#333', // Text color
+        }}
+      >
+        <CardContent>
+          <Typography variant="h5" component="h2" gutterBottom>
+            {name}
+          </Typography>
+          <Typography variant="body2" color="textSecondary">
+            {description}
+          </Typography>
+          <Typography variant="h6" component="p" gutterBottom>
+            Price: ${Number.isInteger(price) ? price : price}
+          </Typography>
+          <Typography variant="h6" component="p">
+            Quantity: {Number.isInteger(quantity) ? quantity : quantity}
+          </Typography>
+        </CardContent>
+          <Button
+            variant="contained"
+            color="primary"
             onClick={handleClickOpen}
-            style={{
-                height: '540px',
-                backgroundColor: '#FFFFFF',
-                color: '#033F63',
-            }}
-            >
-                <Content>
-                <Words>
-                <CardContent style={{ height: '400px' }}>
-                <Typography gutterBottom variant="h4" component="h2" noWrap>
-                    {name}
-                </Typography>
-                <Typography gutterBottom variant="h5" component="h2">
-                    ${Number.isInteger(price) ? price : price}
-                </Typography>
-                <Typography
-                    style={{
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    height: '73px',
-                    }}
-                >
-                    {description}
-                </Typography>
-                <Typography gutterBottom variant="h5" component="h2">
-                    ${Number.isInteger(quantity) ? quantity : quantity}
-                </Typography>
-                </CardContent>
-                </Words>
-                </Content>
-            </Card>
-        </Root>
-        {/*open && (
-          <ProductPopup
-            //callback
-            parentCallback={handleClose}
-            product={product}
-            images={images}
-          />
-        )*/}
-      </div>
+          >
+            Details
+          </Button>
+      </Card>
+      {/* Add your product details popup here */}
+    </Root>
     );
   }
