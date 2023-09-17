@@ -1,18 +1,18 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 
-function UseRouteLogin() {
+function UseRouteHome() {
   const router = useRouter();
 
   useEffect(() => {
-    // Redirect to the "/login" route when accessing the root "/"
-    router.push('/login');
+    // Redirect to the "/home" route when accessing the root "/"
+    router.push('/home');
   }, []); 
 
   return;
 };
 
-export default UseRouteLogin;
+export default UseRouteHome;
 
 
 

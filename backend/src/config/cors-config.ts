@@ -7,7 +7,7 @@ const allowedOrigins: string[] = [`http://localhost:${config.FRONTEND_PORT}`];
 // CORS configuration
 const corsOptions: CorsOptions = {
   origin: (origin, callback) => {
-    console.log(origin);
+    //console.log(origin);
     if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
       // If the origin is in the allowed list or is undefined (e.g., from a same-origin request), allow it
       callback(null, true);

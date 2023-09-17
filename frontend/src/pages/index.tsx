@@ -1,6 +1,5 @@
-import styles from '@/styles/Home.module.css'
-import UseRouteLogin from '../hooks/useRouteLogin';
+import UseRouteHome from '../hooks/useRouteHome';
 
 export default function Home() {
-  UseRouteLogin();
+  UseRouteHome();
 }
