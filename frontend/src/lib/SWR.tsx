@@ -12,10 +12,10 @@ function useCurrentUser() {
         .get<CurrentUser>(url)
         .then((response) => {return response.data})
         .catch((e) => {
-          throw new Error(e);
+          throw { error: e.message };
         });
   
-    const { data, error } = useSWR<CurrentUser, Error>("/users", userFetcher, {
+    const { data, error, isValidating: isLoading } = useSWR<CurrentUser, Error>("/users", userFetcher, {
       revalidateOnFocus: false,
       revalidateOnReconnect: false,
     });
@@ -24,6 +24,7 @@ function useCurrentUser() {
     return {
       data,
       error,
+      isLoading,
     }
   }
 

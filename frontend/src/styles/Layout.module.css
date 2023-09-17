@@ -1,0 +1,12 @@
+.layout {
+    display: flex;
+    background: linear-gradient(to bottom, #ffffff, #f0f0f0);
+  }
+  
+.menuIcon {
+    margin-left: 10px;
+}
+
+.content {
+    flex: 1;
+}
