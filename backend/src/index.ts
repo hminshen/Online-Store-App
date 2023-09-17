@@ -1,5 +1,7 @@
 import UserRouter from './routes/user';
 import AuthRouter from './routes/auth';
+import ItemRouter from './routes/item';
+
 import express from 'express';
 import config from './config/endpoints.config';
 import corsOptions from './config/cors-config';
@@ -40,6 +42,7 @@ app.use(
 // List of different routes available on the backend:
 app.use('/', AuthRouter);
 app.use('/users', UserRouter);
+app.use('/items', ItemRouter);
 
 // Start server on the particular port:
 app.listen(port, ()=>{
