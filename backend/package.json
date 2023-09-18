@@ -85,7 +85,6 @@
     "winston": "^3.10.0"
   },
   "scripts": {
-    "prebuild": "tsconfig.json --fix",
     "build": "tsc",
     "prestart": "npm run build",
     "start": "ts-node src/index.ts",
