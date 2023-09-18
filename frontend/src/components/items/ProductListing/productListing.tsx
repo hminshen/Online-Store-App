@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Pagination from "@mui/material/Pagination";
-import {ProductListing, PaginationStyled} from "./productListingStyles";
+import {ProductListing, PaginationStyled, NoProductsTitle} from "./productListingStyles";
 import ProductCard from "../ProductCard/productCard";
 import { ProductListingsProps } from "../types";
 
@@ -29,6 +29,7 @@ export default function ProductListings(props : ProductListingsProps) {
   
     return (
       <div>
+        {(!products || products.length == 0) && (<NoProductsTitle>No Products available :/</NoProductsTitle>)}
           {products && products.length > 0 && (<ProductListing
             id="productListings"
             data-aos-duration="300"

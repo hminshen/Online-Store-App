@@ -7,7 +7,7 @@ import itemService from "@/services/item";
 import { Button } from "@mui/material";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { CreateItemButton, SignoutButton } from "./style";
+import { AdminTitle, CreateItemButton, SignoutButton } from "./style";
 import CreateItemDialog from "@/components/items/ProductDialog/createProductDialog";
 
 export default function HomeAdmin() {
@@ -151,6 +151,7 @@ export default function HomeAdmin() {
                     Signout
                 </Button>
             </SignoutButton>
+            <AdminTitle>Admin Dashboard</AdminTitle>
             <CreateItemButton>
                 <Button variant="contained" color="primary" onClick={() => setCreateItemDialogOpen(true)}>
                     Create Item
