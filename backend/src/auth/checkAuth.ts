@@ -11,7 +11,8 @@ function checkIfLoggedInAPI(req : any, res : any, next : NextFunction) {
 
   function checkIfAdmin(req : any, res : any, next : NextFunction) {
     // If not admin, then reject
-    if (req.user.role_id != UserRole.Admin) return res.status(401).json("you are not admin");
+    if (req.user.role_id != UserRole.Admin) 
+      return res.status(401).json("you are not admin");
     next();
   }
 

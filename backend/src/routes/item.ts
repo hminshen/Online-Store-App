@@ -1,21 +1,23 @@
 import Express from 'express';
 const router = Express.Router();
 import itemController from '../controllers/item'
-import { checkIfLoggedInAPI } from '../auth/checkAuth';
+import { checkIfAdmin, checkIfLoggedInAPI } from '../auth/checkAuth';
+import itemValidator from '../validators/itemValidator';
+import commonValidator from '../validators/commonValidator';
 
 // Get all items
 router.get('/all', itemController.getItems);
 
 // Get item by id
-router.get('/:id', itemController.getItem);
+router.get('/:id', commonValidator.idValidation, itemController.getItem);
 
 // Create New Item
-router.post('/', itemController.createItem);
+router.post('/', checkIfLoggedInAPI, checkIfAdmin, itemValidator.validateCreateItem, itemController.createItem);
 
 // Update item by id
-router.patch('/:id', itemController.updateItem);
+router.patch('/:id', checkIfLoggedInAPI, checkIfAdmin, commonValidator.idValidation, itemValidator.validateCreateItem, itemController.updateItem);
 
 // Delete item by id
-router.delete('/:id', itemController.deleteItem);
+router.delete('/:id', checkIfLoggedInAPI, checkIfAdmin, commonValidator.idValidation, itemController.deleteItem);
 
 export default router;
