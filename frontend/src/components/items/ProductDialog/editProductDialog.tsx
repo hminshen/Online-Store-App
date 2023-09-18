@@ -8,6 +8,13 @@ import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } 
 
     const [originalProduct, setOriginalProduct] = useState<ProductItem>(product);
 
+    const [errors, setErrors] = useState({
+      name: '',
+      description: '',
+      price: '',
+      quantity: '',
+    });
+
     useEffect(() => {
         // Update the edited product whenever the product prop changes (e.g., when editing a different item)
         setEditedProduct(product);
@@ -20,17 +27,68 @@ import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } 
         ...prevProduct,
         [name]: value,
       }));
+      // Clear error message when user starts typing in the field
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        [name]: '',
+      }));
     };
   
     const handleConfirmClick = () => {
-      onConfirm(editedProduct);
-      onClose();
+      const validationErrors = validateInputs(editedProduct);
+      if (Object.keys(validationErrors).some((key) => !!validationErrors[key])) {
+        // If there are validation errors, update the errors state
+        setErrors(validationErrors);
+      } 
+      else{
+        onConfirm(editedProduct);
+        onClose();
+      }
+
     };
 
     const handleCancelClick = () => {
         // Reset the edited product to the original product data
         setEditedProduct(originalProduct);
         onClose();
+      };
+
+    const validateInputs = (inputData: ProductItem) => {
+        let error = {
+          name: '',
+          description: '',
+          price: '',
+          quantity: '',};
+        // 1. Name validation
+        if (!inputData.name) {
+          error.name = 'Name is required.';
+        } else if (!/^[A-Z][a-zA-Z]*$/.test(inputData.name)) {
+          error.name = 'Name must start with a capital letter.';
+        } else if (inputData.name.length > 30) {
+          error.name = 'Name cannot exceed 30 characters.';
+        }
+
+        // 2. Description validation
+        if (inputData.description.length > 255) {
+          error.description = 'Description cannot exceed 255 characters.';
+        }
+
+        // 3. Price validation
+        if (isNaN(inputData.price) || inputData.price < 0) {
+          error.price = 'Price must be a non-negative number.';
+        } else {
+          const priceParts = inputData.price.toString().split('.');
+          if (priceParts.length === 2 && priceParts[1].length > 2) {
+            error.price = 'Price can have at most 2 decimal places.';
+          }
+        }
+
+        // 4. Quantity validation
+        if (isNaN(inputData.quantity) || inputData.quantity < 0) {
+          error.quantity = 'Quantity must be a non-negative number.';
+        }
+
+        return error;
       };
   
     return (
@@ -44,6 +102,8 @@ import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } 
             onChange={handleInputChange}
             fullWidth
             margin="normal"
+            error={!!errors.name} // Set the error prop based on the presence of errors
+            helperText={errors.name} // Display the error message
           />
           <TextField
             name="description"
@@ -52,6 +112,8 @@ import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } 
             onChange={handleInputChange}
             fullWidth
             margin="normal"
+            error={!!errors.description} // Set the error prop based on the presence of errors
+            helperText={errors.description} // Display the error message
           />
           <TextField
             name="price"
@@ -61,6 +123,8 @@ import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } 
             onChange={handleInputChange}
             fullWidth
             margin="normal"
+            error={!!errors.price} // Set the error prop based on the presence of errors
+            helperText={errors.price} // Display the error message
           />
           <TextField
             name="quantity"
@@ -70,6 +134,8 @@ import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } 
             onChange={handleInputChange}
             fullWidth
             margin="normal"
+            error={!!errors.quantity} // Set the error prop based on the presence of errors
+            helperText={errors.quantity} // Display the error message
           />
         </DialogContent>
         <DialogActions>
