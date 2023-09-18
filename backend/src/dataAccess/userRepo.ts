@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { Prisma, PrismaClient } from '@prisma/client';
 import { User } from '../models/user.model';
 import logger from '../logger/logger'; 
 const prisma = new PrismaClient();
@@ -51,17 +51,29 @@ const GetUserByName = async (name:string) =>{
 }
 
 const CreateUser = async (userData:User) => {
-    try{
-        const userObj = await prisma.user.create({
-            data: userData,            
-        });
-        logger.info('Created user', { userObj });
-        return userObj;
-    }
-    catch(error){
-        logger.error('Error Creating user', { error });
-        throw error;
-    }
+    const userObj = await prisma.user.create({
+        data: userData,            
+    }).then((res) => {
+        logger.info('Created user', { res });
+        return res;
+    }).catch((error) => {
+        let err = error.message;
+        if (error instanceof Prisma.PrismaClientKnownRequestError) {
+            if (error.code === 'P2002') {
+                err = 'There is a unique constraint violation, a new user cannot be created with duplicate username or email';
+                logger.error(err);
+            }
+        } 
+        else if(error instanceof Prisma.PrismaClientUnknownRequestError){
+            err = error.message;
+            logger.error('Error Creating user:' + error.message)
+        }
+        else{
+            logger.error('Error Creating user:', { error });
+        }
+        return err;
+    })
+    return userObj;
 }
 
 const UserRepo = {
