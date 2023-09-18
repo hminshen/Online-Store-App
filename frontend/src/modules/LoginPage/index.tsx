@@ -8,21 +8,50 @@ import Snackbar from "@mui/material/Snackbar";
 const LoginPage = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [usernameError, setUsernameError] = useState<string|null>(null);
+    const [passwordError, setPasswordError] = useState<string|null>(null);
     const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState("");
     const router = useRouter();
+
+    const validateUsername = (username : string) => {
+      if (!username) {
+        setUsernameError('Username is required.')
+        return false;
+      }
+      
+      return true; // No error
+    };
+    
+    const validatePassword = (password : string) => {
+      if (!password) {
+        setPasswordError('Password is required.');
+        return false;
+      }
+      
+      return true; // No error
+    };
   
     const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      setUsername(e.target.value);
+      const newUsername= e.target.value;
+      setUsername(newUsername);
+      setUsernameError(null);
     };
   
     const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      setPassword(e.target.value);
+      const newPassword = e.target.value;
+      setPassword(newPassword);
+      setPasswordError(null);
     };
   
     const handleLogin = async () => {
+      // Validate Username and password:
+      const usernameValid = validateUsername(username);
+      const passwordValid = validatePassword(password);
+      if(!usernameValid || !passwordValid){
+        return;
+      }
       // Implemented Login logic
-      console.log('Logging in with username:', username, 'and password:', password);
       try {
         const userData = await loginApi.loginUser(username, password);
         // Handle successful login to redirect to homePage based on userRole:
@@ -67,6 +96,8 @@ const LoginPage = () => {
                 value={username}
                 onChange={handleUsernameChange}
                 style={{ marginBottom: '10px' }}
+                error={!!usernameError}
+                helperText={usernameError}
               />
               <TextField
                 variant="outlined"
@@ -80,6 +111,8 @@ const LoginPage = () => {
                 value={password}
                 onChange={handlePasswordChange}
                 style={{ marginBottom: '20px' }}
+                error={!!passwordError}
+                helperText={passwordError}
               />
               <Button
                 fullWidth
