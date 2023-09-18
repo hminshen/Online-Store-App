@@ -154,4 +154,6 @@ These are some techniques that can help with security hardening:
 
 2. The "Signup" button on the login page is intended for regular users to sign in to their accounts. This feature is in place for potential future implementations, such as shopping carts and payments. However, since these features are not currently required, the signup page has not been included, and the button serves as a placeholder.
 
-3. I acknowledge that the styling may appear plain. However, I have chosen to prioritize functionality and meeting the specified requirements of the task as outlined.
+3. From my git commits, you will see that i have mainly branched on main (ie. main to feature/test-feature and PR back to main). I know that this is not the correct practice when working in dev teams as usually, there is a dev branch where developers will branch from to implement features and make PRs to it. main branch will only be PR to for deployment of new release. However in this case, I am the sole person working on the application, and the application is not production ready until the end of development. Hence, i decided to not have the use of the develop branch and worked directly with main branch.
+
+4. I acknowledge that the styling may appear plain. However, I have chosen to prioritize functionality and meeting the specified requirements of the task as outlined.
