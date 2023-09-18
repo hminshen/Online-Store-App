@@ -52,7 +52,7 @@ import DeleteProductDialog from "../ProductDialog/deleteProductDialog";
               <TableRow key={product.item_id}>
                 <TableCell>{product.name}</TableCell>
                 <TableCell>{product.description}</TableCell>
-                <TableCell>${product.price}</TableCell>
+                <TableCell>${(product.price / 1).toFixed(2)}</TableCell>
                 <TableCell>{product.quantity}</TableCell>
                 <TableCell>
                   <Button variant="contained" color="primary" onClick={() => handleEditClick(product)}>
