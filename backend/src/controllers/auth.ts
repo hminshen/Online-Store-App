@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import UsersService from '../services/userService';
 import crypto from 'crypto';
+import { SessionUser } from '../models/user.model';
 
 const getUsers = async (req: Request, res: Response) => {
     try{
@@ -33,8 +34,13 @@ const createUser = async (req: Request, res: Response, next: NextFunction) => {
             salt: salt,
             role_id: 1, // default to normal user
         };
-        const newUser = await UsersService.createUser(userData);
-        res.status(200).json(newUser);
+        const newUser: SessionUser | String = await UsersService.createUser(userData);
+        if(typeof newUser == "string" || newUser == null){
+            res.status(500).json({ error: 'Could not create new user:' + newUser });
+        }
+        else{
+            res.status(200).json(newUser);
+        }
         });
     } catch(error){
         console.error('Error creating new user with name:' + error);

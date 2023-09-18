@@ -2,23 +2,43 @@ import UserRepo from '../dataAccess/userRepo'
 import { User } from '../models/user.model';
 
 const getUsers =async () => {
-    const users = await UserRepo.GetUsers();
-    return users
+    try{
+        const users = await UserRepo.GetUsers();
+        return users
+    }
+    catch(error){
+        throw error;
+    }
 }
 
 const getUser = async (id:number) =>{
-    const user = await UserRepo.GetUser(id);
-    return user;
+    try{
+        const user = await UserRepo.GetUser(id);
+        return user;
+    }
+    catch(error){
+        throw error;
+    }
 }
 
 const getUserByName = async (name:string) => {
-    const user = await UserRepo.GetUserByName(name);
-    return user;
+    try{
+        const user = await UserRepo.GetUserByName(name);
+        return user;
+    }
+    catch(error){
+        throw error;
+    }
 }
 
 const createUser = async (userData:User) =>{
-    const user = await UserRepo.CreateUser(userData);
-    return user;
+    try{
+        const user = await UserRepo.CreateUser(userData);
+        return user;
+    }
+    catch(error){
+        throw error;
+    }
 }
 
 const UserService = {

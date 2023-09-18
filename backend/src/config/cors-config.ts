@@ -2,7 +2,7 @@ import { CorsOptions } from 'cors';
 import config from './endpoints.config';
 
 // Define the allowed origins
-const allowedOrigins: string[] = [`http://localhost:${config.FRONTEND_PORT}`];
+const allowedOrigins: string[] = [`${config.FRONTEND_HTTP}://${config.FRONTEND_SERVER}:${config.FRONTEND_PORT}`];
 
 // CORS configuration
 const corsOptions: CorsOptions = {
