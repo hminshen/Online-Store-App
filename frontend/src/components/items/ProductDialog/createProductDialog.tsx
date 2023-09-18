@@ -76,7 +76,7 @@ const CreateItemDialog: React.FC<CreateItemDialogProps> = ({ open, onClose, onCr
         // 1. Name validation
         if (!inputData.name) {
           error.name = 'Name is required.';
-        } else if (!/^[A-Z][a-zA-Z]*$/.test(inputData.name)) {
+        } else if (!/[A-Z]/.test(inputData.name)) {
           error.name = 'Name must start with a capital letter.';
         } else if (inputData.name.length > 30) {
           error.name = 'Name cannot exceed 30 characters.';

@@ -62,7 +62,7 @@ import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } 
         // 1. Name validation
         if (!inputData.name) {
           error.name = 'Name is required.';
-        } else if (!/^[A-Z][a-zA-Z]*$/.test(inputData.name)) {
+        } else if (!/[A-Z]/.test(inputData.name.charAt(0))) {
           error.name = 'Name must start with a capital letter.';
         } else if (inputData.name.length > 30) {
           error.name = 'Name cannot exceed 30 characters.';
